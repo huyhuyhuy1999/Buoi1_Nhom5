@@ -43,23 +43,6 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-volatile uint32_t dbg_rcc_cr = 0u;
-volatile uint32_t dbg_rcc_cfgr = 0u;
-volatile uint32_t dbg_rcc_pllcfgr = 0u;
-volatile uint32_t dbg_rcc_ahb1enr = 0u;
-volatile uint32_t dbg_gpioa_moder = 0u;
-volatile uint32_t dbg_gpioa_afrh = 0u;
-volatile uint32_t dbg_sysclk_hz = 0u;
-volatile uint32_t dbg_gpioa_clock_enabled = 0u;
-volatile uint32_t dbg_pa8_mode = 0u;
-volatile uint32_t dbg_pa8_af = 0u;
-volatile uint32_t dbg_hsi_ready = 0u;
-volatile uint32_t dbg_hse_ready = 0u;
-volatile uint32_t dbg_pll_ready = 0u;
-volatile uint32_t dbg_sysclk_sw = 0u;
-volatile uint32_t dbg_sysclk_sws = 0u;
-volatile uint32_t dbg_mco1_source = 0u;
-volatile uint32_t dbg_mco1_prescaler = 0u;
 
 /* USER CODE END PV */
 
@@ -68,33 +51,11 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-static void UpdateDebugWatch(void);
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static void UpdateDebugWatch(void)
-{
-  dbg_rcc_cr = RCC->CR;
-  dbg_rcc_cfgr = RCC->CFGR;
-  dbg_rcc_pllcfgr = RCC->PLLCFGR;
-  dbg_rcc_ahb1enr = RCC->AHB1ENR;
-  dbg_gpioa_moder = GPIOA->MODER;
-  dbg_gpioa_afrh = GPIOA->AFR[1];
-  dbg_sysclk_hz = HAL_RCC_GetSysClockFreq();
-
-  dbg_gpioa_clock_enabled = (RCC->AHB1ENR >> 0) & 0x1u;
-  dbg_pa8_mode = (GPIOA->MODER >> 16) & 0x3u;
-  dbg_pa8_af = (GPIOA->AFR[1] >> 0) & 0xFu;
-  dbg_hsi_ready = (RCC->CR >> 1) & 0x1u;
-  dbg_hse_ready = (RCC->CR >> 17) & 0x1u;
-  dbg_pll_ready = (RCC->CR >> 25) & 0x1u;
-  dbg_sysclk_sw = (RCC->CFGR >> 0) & 0x3u;
-  dbg_sysclk_sws = (RCC->CFGR >> 2) & 0x3u;
-  dbg_mco1_source = (RCC->CFGR >> 21) & 0x3u;
-  dbg_mco1_prescaler = (RCC->CFGR >> 24) & 0x7u;
-}
 
 /* USER CODE END 0 */
 
@@ -129,7 +90,6 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  UpdateDebugWatch();
 
   /* USER CODE END 2 */
 
@@ -140,7 +100,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    UpdateDebugWatch();
   }
   /* USER CODE END 3 */
 }
@@ -189,9 +148,9 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+/**
 }
 
-/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
